@@ -28,7 +28,6 @@ public class DriveBase extends Subsystem {
     public Encoder leftEncoder, rightEncoder;
     private ADXRS450_Gyro gyro;
     private AnalogInput rangeFinder;
-	//private double distanceSP = 24.0;
         
     public DriveBase() {
        // Instantiating motor controllers for drive base motors:
