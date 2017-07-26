@@ -10,7 +10,7 @@ import edu.wpi.first.wpilibj.Joystick;
 public class OI {
 	
 	// NEWING the Joystick & Driver Station
-	Joystick driveJoystick = new Joystick(RobotMap.DRIVE_JOYSTICK);
+	public static Joystick driveJoystick = new Joystick(RobotMap.DRIVE_JOYSTICK);
 	DriverStation DS = DriverStation.getInstance();
 	
 	}
