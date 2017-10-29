@@ -34,7 +34,7 @@ public class RobotMap {
 
 	// Setting up Distance Sensor (MAXSONAR XL-EZ/AE MB1200)
 	// Number is ANALOG Port on Roborio
-	public static int Sonar = 1;
+	//public static int Sonar = 1;
 	
 	// Setting up Gyro/Accelerometer (ADXL362/ ADXRS450)
 	// Direct-Connect to SPI Socket on Roborio

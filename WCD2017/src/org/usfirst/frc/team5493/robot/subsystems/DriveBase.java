@@ -9,7 +9,7 @@ import edu.wpi.first.wpilibj.Victor;
 import edu.wpi.first.wpilibj.VictorSP;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.ADXRS450_Gyro;
-import edu.wpi.first.wpilibj.AnalogInput;
+// import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
@@ -20,14 +20,17 @@ import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 
 public class DriveBase extends Subsystem {
 
+	double wheelDiameter = 4.0;
+	double pulsesPerRevolution = 1440.0;
+	double averageDistance;
 	public SpeedController leftRearMotor;
     public SpeedController rightRearMotor;
     public SpeedController leftFrontMotor;
     public SpeedController rightFrontMotor;
-    private RobotDrive drive;
+    public RobotDrive drive;
     public Encoder leftEncoder, rightEncoder;
-    private ADXRS450_Gyro gyro;
-    private AnalogInput rangeFinder;
+    public ADXRS450_Gyro gyro;
+    //private AnalogInput rangeFinder;
         
     public DriveBase() {
        // Instantiating motor controllers for drive base motors:
@@ -45,14 +48,14 @@ public class DriveBase extends Subsystem {
        leftEncoder = new Encoder(RobotMap.L_Encoder_A,RobotMap.L_Encoder_B, false, Encoder.EncodingType.k4X);
        rightEncoder = new Encoder(RobotMap.R_Encoder_A,RobotMap.R_Encoder_B,false, Encoder.EncodingType.k4X);
        gyro = new ADXRS450_Gyro();
-       rangeFinder = new AnalogInput(RobotMap.Sonar);
+       //rangeFinder = new AnalogInput(RobotMap.Sonar);
      
-   		// Set encoder distance per pulse: assuming 1440 pulses per revolution and
+   		// Set encoder distance per pulse: 1440 pulses per revolution and
        // 4 inch diameter wheels... Encoder on Wheel Shaft SO 1 wheel revolution
        // is equal to one encoder revolution
        
-       leftEncoder.setDistancePerPulse((4.0/12.0*Math.PI)/1440.0);
-       rightEncoder.setDistancePerPulse((4.0/12.0*Math.PI)/1440.0);
+       leftEncoder.setDistancePerPulse((wheelDiameter*Math.PI)/pulsesPerRevolution);
+       rightEncoder.setDistancePerPulse((wheelDiameter*Math.PI)/pulsesPerRevolution);
        
        // Display everything on the LiveWindow:
        LiveWindow.addActuator("Drive Base", "Left Front Motor", leftFrontMotor);
@@ -61,7 +64,7 @@ public class DriveBase extends Subsystem {
        LiveWindow.addActuator("Drive Base", "Right Rear Motor", rightRearMotor);
        LiveWindow.addSensor("Drive Base", "Left Encoder", leftEncoder);
        LiveWindow.addSensor("Drive Base", "Right Encoder", rightEncoder);
-       LiveWindow.addSensor("Drive Base", "RangeFinder", rangeFinder);
+       //LiveWindow.addSensor("Drive Base", "RangeFinder", rangeFinder);
        LiveWindow.addSensor("Drive Base", "Gyro", gyro);
     }
     
@@ -70,9 +73,9 @@ public class DriveBase extends Subsystem {
 		setDefaultCommand(new DriveTankJoystick());
 	}
 			
-	public void drive(Joystick joy) {
-		drive(-0.5*joy.getRawAxis(RobotMap.JOYAX_LY), -0.5*joy.getRawAxis(RobotMap.JOYAX_RY));
-	}
+	//public void drive(Joystick joy) {
+	//	drive(-0.5*joy.getRawAxis(RobotMap.JOYAX_LY), -0.5*joy.getRawAxis(RobotMap.JOYAX_RY));
+	//}
 
 	public void drive(double x, double y) {
 		drive.tankDrive(x, y);
@@ -85,29 +88,25 @@ public class DriveBase extends Subsystem {
 	       //SmartDashboard.putNumber("Left Speed", this.leftEncoder.getRate());
 	       //SmartDashboard.putNumber("Right Speed", this.rightEncoder.getRate());
 	       SmartDashboard.putNumber("Gyro Angle", this.gyro.getAngle());
-	       SmartDashboard.putNumber("Rangefinder (inches)", rangeFinder.getVoltage());
+	       //SmartDashboard.putNumber("Rangefinder (inches)", rangeFinder.getVoltage());
 	}
 	
 	// Reset the initial gyro and encoder values to zero
-   	public void reset() {
-		gyro.reset();
+   	public void resetEncoders() {
 		leftEncoder.reset();
 		rightEncoder.reset();
-		}
+	}
+   	
+   	public void resetGyro() {
+   		gyro.reset();
+   	}
 	
 	public double getHeading() {
 		return gyro.getAngle();
 	}
 	
-	public double getDistance() {
-		return (leftEncoder.getDistance() + rightEncoder.getDistance())/2;
+	public double averageDistance() {
+		return Math.abs((leftEncoder.getDistance() + rightEncoder.getDistance())/2.0);
 	}
 }
-	/*public boolean onTarget() {
-		if(getDistance()>= distanceSP) {
-			return true;
-		}
-	}      NEED HELP HERE- want to create a public boolean (true) when robot
-	*        is at distance setpoint (distanceSP)- for use in DriveEncoder Command
-	*/
 

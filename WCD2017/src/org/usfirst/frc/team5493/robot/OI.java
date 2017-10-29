@@ -12,7 +12,6 @@ public class OI {
 	// NEWING the Joystick & Driver Station
 	public static Joystick driveJoystick = new Joystick(RobotMap.DRIVE_JOYSTICK);
 	DriverStation DS = DriverStation.getInstance();
-	
 	}
 	//// CREATING BUTTONS
 	// One type of button is a joystick button which is any button on a

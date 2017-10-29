@@ -1,12 +1,10 @@
 package org.usfirst.frc.team5493.robot.commands;
 
 import org.usfirst.frc.team5493.robot.Robot;
+import org.usfirst.frc.team5493.robot.RobotMap;
 
 import edu.wpi.first.wpilibj.command.Command;
 
-/**
- *
- */
 public class DriveTankJoystick extends Command {
 
     public DriveTankJoystick() {
@@ -20,7 +18,7 @@ public class DriveTankJoystick extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	Robot.driveBase.drive(Robot.oi.driveJoystick);
+    	Robot.driveBase.drive(-RobotMap.JOYAX_LY, -RobotMap.JOYAX_RY);
     }
 
     // Make this return true when this Command no longer needs to run execute()

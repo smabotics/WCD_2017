@@ -5,9 +5,8 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 public class Autonomous extends CommandGroup {
 
     public Autonomous() {
-        addSequential(new DriveDistance());
-        addSequential(new DriveEncoder());
-        // these will run in order.
+        addParallel(new DriveEncoder());
+        addParallel(new DriveGyro());
 
         // To run multiple commands at the same time,
         // use addParallel()
